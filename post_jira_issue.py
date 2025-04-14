@@ -23,17 +23,12 @@ headers = {
 
 payload = json.dumps( {
   "fields": {
-    "components": [
-      {
-        "id": "10000"
-      }
-    ],
     "description": {
       "content": [
         {
           "content": [
             {
-              "text": "Order entry fails when selecting supplier.",
+              "text": "Test ticket from Guillem",
               "type": "text"
             }
           ],
@@ -49,26 +44,16 @@ payload = json.dumps( {
     "labels": [
       "nmp",
     ],
-    "parent": {
-      "key": "PROJ-123"
-    },
     "priority": {
-      "id": "20000"
+        "iconUrl": "https://boats-group.atlassian.net/images/icons/priorities/medium.svg",
+        "id": "3",
+        "name": "Medium",
+        "self": "https://boats-group.atlassian.net/rest/api/3/priority/3"
     },
     "project": {
-      "id": "10000"
-    },
-    "reporter": {
-      "id": "5b10a2844c20165700ede21g"
-    },
-    "security": {
-      "id": "10000"
+      "id": "10218"
     },
     "summary": "Main order flow broken",
-    "timetracking": {
-      "originalEstimate": "10",
-      "remainingEstimate": "5"
-    },
   },
   "update": {}
 } )
