@@ -1,0 +1,52 @@
+{
+  "fields": {
+    "description": {
+      "content": [
+        {
+          "content": [
+            {
+              "text": "Test ticket from Guillem",
+              "type": "text"
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "type": "doc",
+      "version": 1
+    },
+    "customfield_10115": {
+      "type": "doc",
+      "version": 1,
+      "content": [
+        { "type": "bulletList",
+        "content": [{"type": "listItem",
+        "content": [{"type": "paragraph",
+        "content": [{"type": "text",
+        "text": "Ensure Logger works as expected: "},
+        {"type": "inlineCard",
+        "attrs": {"url": "https://bitbucket.org/boats-group/webapp-deno-marketplace/pull-requests/86/diff"}},
+        {"type": "text",
+        "text": " "}]},
+        {"type": "bulletList",
+        "content": [{"type": "listItem",
+        "content": [{"type": "paragraph",
+        "content": [{"type": "text","text": "logger tags"}]}]},{"type": "listItem","content": [{"type": "paragraph","content": [{"type": "text","text": "deno lock multiple versions package"}]}]}]}]},{"type": "listItem","content": [{"type": "paragraph","content": [{"type": "text","text": "Reuse function getFormDataString in other forms in the codebase:"}]},{"type": "bulletList","content": [{"type": "listItem","content": [{"type": "paragraph","content": [{"type": "inlineCard","attrs": {"url": "https://bitbucket.org/boats-group/webapp-deno-marketplace/src/080ea2873a529ffb6d9eecf788cb8be025076251/src/handlers/Profile/ProfileHandler.tsx?at=main#lines-64:70"}},{"type": "text","text": " "}]}]}]}]},{"type": "listItem","content": [{"type": "paragraph","content": [{"type": "text","text": "Use Props for all components"}]},{"type": "bulletList","content": [{"type": "listItem","content": [{"type": "paragraph","content": [{"type": "text","text": "Interface vs inline type definition"}]}]}]}]}]}]},
+    "issuetype": {
+      "id": "10000"
+    },
+    "labels": [
+      "nmp"
+    ],
+    "priority": {
+        "iconUrl": "https://boats-group.atlassian.net/images/icons/priorities/medium.svg",
+        "id": "3",
+        "name": "Medium",
+        "self": "https://boats-group.atlassian.net/rest/api/3/priority/3"
+    },
+    "project": {
+      "id": "10218"
+    },
+    "summary": "Main order flow broken"
+  }
+} 

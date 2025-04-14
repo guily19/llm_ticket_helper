@@ -4,10 +4,15 @@ import requests
 from requests.auth import HTTPBasicAuth
 import json
 import os
-
 from dotenv import load_dotenv
+from create_jira_ticket_content import create_jira_ticket_content  # Import the function
 
 load_dotenv()
+
+task_description = "Create an AWS Codebuild image to run DenoJS tests"
+
+# Get the ticket content from the OpenAI function
+ticket_content = create_jira_ticket_content(task_description)
 
 jira_email = os.getenv("JIRA_EMAIL")
 jira_api_key = os.getenv("JIRA_API_KEY")
@@ -21,42 +26,8 @@ headers = {
   "Content-Type": "application/json"
 }
 
-payload = json.dumps( {
-  "fields": {
-    "description": {
-      "content": [
-        {
-          "content": [
-            {
-              "text": "Test ticket from Guillem",
-              "type": "text"
-            }
-          ],
-          "type": "paragraph"
-        }
-      ],
-      "type": "doc",
-      "version": 1
-    },
-    "issuetype": {
-      "id": "10000"
-    },
-    "labels": [
-      "nmp",
-    ],
-    "priority": {
-        "iconUrl": "https://boats-group.atlassian.net/images/icons/priorities/medium.svg",
-        "id": "3",
-        "name": "Medium",
-        "self": "https://boats-group.atlassian.net/rest/api/3/priority/3"
-    },
-    "project": {
-      "id": "10218"
-    },
-    "summary": "Main order flow broken",
-  },
-  "update": {}
-} )
+# Use the generated ticket content
+payload = ticket_content
 
 response = requests.request(
    "POST",

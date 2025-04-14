@@ -1,10 +1,9 @@
 import os
 from openai import OpenAI
 from dotenv import load_dotenv
+import json
 
 MODEL = "gpt-4o-mini"
-
-task_description = "Create an AWS Codebuild image to run DenoJS tests"
 
 # Load environment variables from .env file
 load_dotenv()
@@ -25,7 +24,7 @@ def create_jira_ticket_content(task_description: str) -> str:
             You are also really good at writting user stories and you are really good at writting test cases.
         """
 
-        print(task_description)
+        jira_ticket_template = json.load(open("issue_template.json"))
 
         user_prompt = f"""
             You are given a task description and you need to write a jira ticket for it.
@@ -37,10 +36,11 @@ def create_jira_ticket_content(task_description: str) -> str:
             - Jira ticket priority
             - Jira ticket reporter: Guillem Casanova
             - Jira ticket acceptation criteria
-            The output should be in Markdown format.
+            This is the template for the jira ticket:
+            {jira_ticket_template}
+            And customfield_10115 is the section where you need to add the acceptance criteria.
         """
 
-        print(user_prompt)
         # Make the API call
         response = openai.chat.completions.create(
             model=MODEL,
@@ -64,16 +64,11 @@ def create_jira_ticket_content(task_description: str) -> str:
     except Exception as e:
         raise Exception(f"Error calling OpenAI API: {str(e)}")
 
-def main():
-    try:        
-        # Get the answer
-        answer = create_jira_ticket_content(task_description)
-        
-        # Print the results
-        print(f"Answer: {answer}")
-        
-    except Exception as e:
-        print(f"Error: {str(e)}")
-
 if __name__ == "__main__":
-    main() 
+    # Only run this if the file is run directly
+    task_description = "Create an AWS Codebuild image to run DenoJS tests"
+    try:        
+        answer = create_jira_ticket_content(task_description)
+        print(f"Answer: {answer}")
+    except Exception as e:
+        print(f"Error: {str(e)}") 

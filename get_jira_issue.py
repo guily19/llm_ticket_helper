@@ -15,6 +15,8 @@ jira_email = os.getenv("JIRA_EMAIL")
 
 url = f"https://boats-group.atlassian.net/rest/api/3/issue/{issue_id}"
 
+print(url)
+
 auth = HTTPBasicAuth(jira_email, jira_api_key)
 
 print(jira_email)
@@ -31,6 +33,6 @@ response = requests.request(
    auth=auth
 )
 
-print(response)
+# print(response)
 
 print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
