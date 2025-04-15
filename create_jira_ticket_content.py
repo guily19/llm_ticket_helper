@@ -16,29 +16,66 @@ if not api_key:
 # Initialize the OpenAI client
 openai = OpenAI(api_key=api_key)
 
+def load_json_schema():
+    with open('schemas/create_issue_schema.json', 'r') as schema_file:
+        return json.load(schema_file)
+
 def create_jira_ticket_content(task_description: str) -> str:
     try:
+        schema = load_json_schema()
+        
         system_prompt = """
             You are a Product Manager that is responsible for the product and the product roadmap.
-            You are really good writting jira tickets and you are really good at writting product requirements.
-            You are also really good at writting user stories and you are really good at writting test cases.
+            You are really good at writing Jira tickets and product requirements.
+            You must respond with a valid JSON that follows the provided JSON schema.
+            
+            Important formatting rules:
+            1. The issuetype must be an object with an "id" field as string: {"id": "10000"}
+            2. The priority must include all fields: id, name, iconUrl, and self
+            3. All IDs must be strings, not numbers
+            4. The description and customfield_10115 must follow the Atlassian document structure
         """
 
-        jira_ticket_template = json.load(open("issue_template.json"))
+        functions = [
+            {
+                "name": "create_jira_issue",
+                "description": "Creates a Jira issue with the specified fields",
+                "parameters": schema
+            }
+        ]
 
         user_prompt = f"""
-            You are given a task description and you need to write a jira ticket for it.
-            The task description is: {task_description}
-            The output should containe the:
-            - Jira ticket title
-            - Jira ticket User Story
-            - Jira ticket description
-            - Jira ticket priority
-            - Jira ticket reporter: Guillem Casanova
-            - Jira ticket acceptation criteria
-            This is the template for the jira ticket:
-            {jira_ticket_template}
-            And customfield_10115 is the section where you need to add the acceptance criteria.
+            Create a Jira ticket for the following task: {task_description}
+            
+            Use exactly these values:
+            - Issue type: {{"id": "10000"}}
+            - Project: {{"id": "10218"}}
+            - Priority: {{
+                "iconUrl": "https://boats-group.atlassian.net/images/icons/priorities/medium.svg",
+                "id": "3",
+                "name": "Medium",
+                "self": "https://boats-group.atlassian.net/rest/api/3/priority/3"
+            }}
+            - Labels: ["nmp"]
+            
+            The description and customfield_10115 should follow this structure:
+            {{
+              "type": "doc",
+              "version": 1,
+              "content": [
+                {{
+                  "content": [
+                    {{
+                      "text": "Your text here",
+                      "type": "text"
+                    }}
+                  ],
+                  "type": "paragraph"
+                }}
+              ]
+            }}
+            
+            Make sure all IDs are strings, not numbers.
         """
 
         # Make the API call
@@ -54,12 +91,27 @@ def create_jira_ticket_content(task_description: str) -> str:
                     "content": user_prompt
                 }
             ],
-            temperature=0.7,
+            functions=functions,
+            function_call={"name": "create_jira_issue"},
+            temperature=0.2,
             max_tokens=1000
         )
         
-        # Return the response content
-        return response.choices[0].message.content
+        # Extract the function call arguments from the response
+        function_response = response.choices[0].message.function_call
+        if function_response and function_response.arguments:
+            # Parse and validate the response
+            response_json = json.loads(function_response.arguments)
+            
+            # Ensure issuetype is correctly formatted
+            if "fields" in response_json and "issuetype" in response_json["fields"]:
+                issuetype = response_json["fields"]["issuetype"]
+                if isinstance(issuetype.get("id"), int):
+                    issuetype["id"] = str(issuetype["id"])
+            
+            return json.dumps(response_json, indent=2)
+        else:
+            raise Exception("No valid function response received from OpenAI")
         
     except Exception as e:
         raise Exception(f"Error calling OpenAI API: {str(e)}")
@@ -69,6 +121,6 @@ if __name__ == "__main__":
     task_description = "Create an AWS Codebuild image to run DenoJS tests"
     try:        
         answer = create_jira_ticket_content(task_description)
-        print(f"Answer: {answer}")
+        print(f"Generated Jira ticket content:\n{answer}")
     except Exception as e:
         print(f"Error: {str(e)}") 
