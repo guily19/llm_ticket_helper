@@ -6,13 +6,21 @@ import json
 import os
 from dotenv import load_dotenv
 from create_jira_ticket_content import create_jira_ticket_content  # Import the function
+import argparse
 
 load_dotenv()
 
-task_description = "Create an AWS Codebuild image to run DenoJS tests"
+
+parser = argparse.ArgumentParser(description='Generate Jira ticket content from task description')
+parser.add_argument('task_description', 
+                    type=str,
+                    help='Description of the task for the Jira ticket')
+
+# Parse arguments
+args = parser.parse_args()
 
 # Get the ticket content from the OpenAI function
-ticket_content = create_jira_ticket_content(task_description)
+ticket_content = create_jira_ticket_content(args.task_description)
 
 jira_email = os.getenv("JIRA_EMAIL")
 jira_api_key = os.getenv("JIRA_API_KEY")
