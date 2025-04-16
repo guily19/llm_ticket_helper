@@ -2,6 +2,7 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv
 import json
+import argparse
 
 MODEL = "gpt-4o-mini"
 
@@ -63,10 +64,21 @@ def create_jira_ticket_content(task_description: str) -> dict:
     except Exception as e:
         raise Exception(f"Error generating Jira ticket: {str(e)}\nRaw response: {content if 'content' in locals() else 'No content'}")
 
-if __name__ == "__main__":
-    task_description = "Create an AWS Codebuild image to run DenoJS tests"
+def main():
+    # Set up argument parser
+    parser = argparse.ArgumentParser(description='Generate Jira ticket content from task description')
+    parser.add_argument('task_description', 
+                       type=str,
+                       help='Description of the task for the Jira ticket')
+    
+    # Parse arguments
+    args = parser.parse_args()
+    
     try:        
-        ticket = create_jira_ticket_content(task_description)
+        ticket = create_jira_ticket_content(args.task_description)
         print(json.dumps(ticket, indent=2))
     except Exception as e:
-        print(f"Error: {str(e)}") 
+        print(f"Error: {str(e)}")
+
+if __name__ == "__main__":
+    main() 
