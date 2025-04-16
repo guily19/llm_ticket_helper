@@ -21,7 +21,7 @@ This project uses OpenAI's GPT model to automatically generate and create Jira t
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd personal_llm
+cd llm_ticket_helper
 ```
 
 2. Create and activate a virtual environment:
