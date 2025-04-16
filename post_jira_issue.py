@@ -27,7 +27,7 @@ headers = {
 }
 
 # Use the generated ticket content
-payload = ticket_content
+payload = json.dumps(ticket_content)
 
 response = requests.request(
    "POST",
