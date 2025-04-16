@@ -8,7 +8,7 @@ This project uses OpenAI's GPT model to automatically generate and create Jira t
 - Structured JSON schema validation for Jira ticket format
 - Environment-based configuration
 - Command-line interface
-- Proper error handling and debug mode
+- Proper error handling and debug output
 
 ## Prerequisites
 
@@ -21,7 +21,7 @@ This project uses OpenAI's GPT model to automatically generate and create Jira t
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd llm_ticket_helper
+cd personal_llm
 ```
 
 2. Create and activate a virtual environment:
@@ -41,29 +41,35 @@ OPENAI_API_KEY=your_openai_api_key
 JIRA_EMAIL=your_jira_email
 JIRA_API_KEY=your_jira_api_key
 JIRA_API_URL=your_jira_api_url
+JIRA_PROJECT_ID="10218"
+JIRA_TICKET_LABELS="nmp"
 ```
 
 ## Usage
 
-The main script to create Jira tickets is `post_jira_issue.py`. You can run it from the command line with a task description:
+You can either generate ticket content only or create the ticket in Jira directly:
+
+### Generate Ticket Content Only
+
+Use `create_jira_ticket_content.py` to generate the ticket content without creating it in Jira:
+
+```bash
+python create_jira_ticket_content.py "Create an AWS Codebuild image to run DenoJS tests"
+```
+
+This will output the JSON content that would be used to create the ticket.
+
+### Create Ticket in Jira
+
+Use `post_jira_issue.py` to generate and create the ticket in Jira:
 
 ```bash
 python post_jira_issue.py "Create an AWS Codebuild image to run DenoJS tests"
 ```
 
-### Command Line Options
+This will:
+1. Generate the ticket content using OpenAI
+2. Post it to Jira
+3. Display the response from Jira
 
-- `task_description`: (Required) The description of the task for the Jira ticket
-- `--debug`: (Optional) Print additional debug information
-
-### Example
-
-```bash
-# Basic usage
-python post_jira_issue.py "Implement user authentication with OAuth2"
-
-# With debug mode
-python post_jira_issue.py "Update Docker container for Node.js 18" --debug
-```
-
-### Example Output 
+## Project Structure
