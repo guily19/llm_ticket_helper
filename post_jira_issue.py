@@ -24,8 +24,7 @@ ticket_content = create_jira_ticket_content(args.task_description)
 
 jira_email = os.getenv("JIRA_EMAIL")
 jira_api_key = os.getenv("JIRA_API_KEY")
-
-url = "https://boats-group.atlassian.net/rest/api/3/issue"
+jira_api_url = os.getenv("JIRA_API_URL")
 
 auth = HTTPBasicAuth(jira_email, jira_api_key)
 
@@ -39,7 +38,7 @@ payload = json.dumps(ticket_content)
 
 response = requests.request(
    "POST",
-   url,
+   jira_api_url,
    data=payload,
    headers=headers,
    auth=auth
