@@ -73,3 +73,52 @@ This will:
 3. Display the response from Jira
 
 ## Project Structure
+
+personal_llm/
+├── .env # Environment variables
+├── README.md # Project documentation
+├── requirements.txt # Python dependencies
+├── post_jira_issue.py # Script for creating Jira tickets
+├── create_jira_ticket_content.py # OpenAI integration for content generation
+└── schemas/
+└── create_issue_schema.json # JSON schema for Jira ticket validation
+```
+
+## Environment Variables
+
+- `OPENAI_API_KEY`: Your OpenAI API key
+- `JIRA_EMAIL`: Your Jira account email
+- `JIRA_API_KEY`: Your Jira API token
+- `JIRA_API_URL`: Your Jira API endpoint URL
+- `JIRA_PROJECT_ID`: Your Jira project ID (default: "10218")
+- `JIRA_TICKET_LABELS`: Labels to apply to tickets (default: "nmp")
+
+## Schema
+
+The project uses a JSON schema to ensure the generated tickets follow Jira's required format. The schema includes:
+- Description field with Atlassian document structure
+- Custom fields for acceptance criteria
+- Required fields for issue type, project, and priority
+- Proper validation for all required fields
+
+## Error Handling
+
+The scripts include error handling for:
+- Missing environment variables
+- Invalid API credentials
+- JSON parsing errors
+- OpenAI API errors
+- Jira API errors
+
+Each error will display:
+- The error type
+- A descriptive message
+- Raw response data when available (for debugging)
+
+## Contributing
+
+Feel free to submit issues, fork the repository, and create pull requests for any improvements.
+
+## License
+
+MIT License
