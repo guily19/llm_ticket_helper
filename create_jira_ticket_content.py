@@ -44,7 +44,6 @@ def create_jira_ticket_content(task_description: str) -> dict:
         """
 
         content = generate_ai_content(system_prompt, user_prompt)
-        print(content)
         return content
         
     except Exception as e:

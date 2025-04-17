@@ -12,8 +12,9 @@ issue_id = "BT-2327"
 
 jira_api_key = os.getenv("JIRA_API_KEY")
 jira_email = os.getenv("JIRA_EMAIL")
+jira_api_url = os.getenv("JIRA_API_URL")
 
-url = f"https://boats-group.atlassian.net/rest/api/3/issue/{issue_id}"
+url = f"{jira_api_url}/rest/api/3/issue/{issue_id}"
 
 print(url)
 
