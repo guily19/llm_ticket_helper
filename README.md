@@ -1,14 +1,15 @@
 # Personal LLM - Jira Ticket Creator
 
-This project uses OpenAI's GPT model to automatically generate and create Jira tickets with well-structured content. It takes a task description as input and creates a properly formatted Jira ticket with appropriate fields, descriptions, and acceptance criteria.
+A Python-based tool that leverages OpenAI's GPT model to automatically generate and create Jira tickets. The tool takes a task description as input and creates a properly formatted Jira ticket with appropriate fields, descriptions, and acceptance criteria.
 
 ## Features
 
 - Automatic Jira ticket generation using OpenAI GPT
-- Structured JSON schema validation for Jira ticket format
-- Environment-based configuration
-- Command-line interface
-- Proper error handling and debug output
+- JSON schema validation for Jira ticket format
+- Environment-based configuration with sample template
+- Command-line interface for both content generation and ticket creation
+- Structured Jira ticket format with proper Atlassian document structure
+- Support for custom fields including acceptance criteria
 
 ## Prerequisites
 
@@ -19,29 +20,35 @@ This project uses OpenAI's GPT model to automatically generate and create Jira t
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone <repository-url>
 cd personal_llm
 ```
 
 2. Create and activate a virtual environment:
+
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
 3. Install dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Create a `.env` file in the root directory with your credentials:
+4. Set up environment variables:
+   - Copy `.envsample` to `.env`
+   - Fill in your credentials in `.env`:
+
 ```env
 OPENAI_API_KEY=your_openai_api_key
 JIRA_EMAIL=your_jira_email
 JIRA_API_KEY=your_jira_api_key
 JIRA_API_URL=your_jira_api_url
-JIRA_PROJECT_ID="10218"
+JIRA_PROJECT_ID="10000"
 JIRA_TICKET_LABELS="nmp"
 ```
 
@@ -68,6 +75,7 @@ python post_jira_issue.py "Create an AWS Codebuild image to run DenoJS tests"
 ```
 
 This will:
+
 1. Generate the ticket content using OpenAI
 2. Post it to Jira
 3. Display the response from Jira
@@ -82,6 +90,7 @@ personal_llm/
 ├── create_jira_ticket_content.py # OpenAI integration for content generation
 └── schemas/
 └── create_issue_schema.json # JSON schema for Jira ticket validation
+
 ```
 
 ## Environment Variables
@@ -90,7 +99,7 @@ personal_llm/
 - `JIRA_EMAIL`: Your Jira account email
 - `JIRA_API_KEY`: Your Jira API token
 - `JIRA_API_URL`: Your Jira API endpoint URL
-- `JIRA_PROJECT_ID`: Your Jira project ID (default: "10218")
+- `JIRA_PROJECT_ID`: Your Jira project ID (default: "10000")
 - `JIRA_TICKET_LABELS`: Labels to apply to tickets (default: "nmp")
 
 ## Schema
@@ -122,3 +131,4 @@ Feel free to submit issues, fork the repository, and create pull requests for an
 ## License
 
 MIT License
+```
