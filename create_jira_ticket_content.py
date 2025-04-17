@@ -3,21 +3,17 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import json
 import argparse
+from services.openai_api import generate_ai_content
 
-MODEL = "gpt-4o-mini"
 
 # Load environment variables from .env file
 load_dotenv()
 
 # Get API key from environment variable
-api_key = os.getenv("OPENAI_API_KEY")
 project_id = os.getenv("JIRA_PROJECT_ID")
 labels = os.getenv("JIRA_TICKET_LABELS")
-if not api_key:
-    raise ValueError("OPENAI_API_KEY environment variable is not set")
 
 # Initialize the OpenAI client
-openai = OpenAI(api_key=api_key)
 
 def load_json_schema():
     with open('schemas/create_issue_schema.json', 'r') as schema_file:
@@ -47,21 +43,9 @@ def create_jira_ticket_content(task_description: str) -> dict:
         schema: {json.dumps(schema, indent=2)}
         """
 
-        response = openai.chat.completions.create(
-            model=MODEL,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt}
-            ],
-            temperature=0,
-            max_tokens=1000
-        )
-        
-        # Get the response content and parse it as JSON
-        content = response.choices[0].message.content.strip()
-        print("Raw response:", content)  # Debug print
-        
-        return json.loads(content)
+        content = generate_ai_content(system_prompt, user_prompt)
+        print(content)
+        return content
         
     except Exception as e:
         raise Exception(f"Error generating Jira ticket: {str(e)}\nRaw response: {content if 'content' in locals() else 'No content'}")
