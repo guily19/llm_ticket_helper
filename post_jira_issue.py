@@ -33,12 +33,14 @@ headers = {
   "Content-Type": "application/json"
 }
 
+url = f"{jira_api_url}/rest/api/3/issue"
+
 # Use the generated ticket content
 payload = json.dumps(ticket_content)
 
 response = requests.request(
    "POST",
-   jira_api_url,
+   url,
    data=payload,
    headers=headers,
    auth=auth
